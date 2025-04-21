@@ -6,13 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Is er al witte rook? Zie hier als eerste of de nieuwe paus al gekozen is...">
     <meta name="author" content="Martijn Russchen">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💨</text></svg>">
 
-    <!-- Le styles -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style type="text/css">
       body {
         padding-top: 20px;
         padding-bottom: 40px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       }
 
       /* Custom container */
@@ -28,47 +32,94 @@
       .jumbotron {
         margin: 60px 0;
         text-align: center;
+        padding: 2rem 1rem;
+        background-color: #f8f9fa;
+        border-radius: 0.5rem;
       }
       .jumbotron h1 {
-        font-size: 72px;
-        line-height: 1;
+        font-size: 3.5rem;
+        line-height: 1.2;
       }
       .jumbotron .btn {
-        font-size: 21px;
-        padding: 14px 24px;
+        font-size: 1.25rem;
+        padding: 0.75rem 1.5rem;
       }
       .answer-no {
-        color: #FF0000
+        color: #dc3545;
+        font-weight: bold;
       }
       .answer-yes {
-        color: #00FF00
+        color: #28a745;
+        font-weight: bold;
+      }
+      
+      @media (prefers-color-scheme: dark) {
+        .jumbotron {
+          background-color: #2d2d2d;
+        }
+      }
+
+      /* Style for the news feed */
+      #news-feed ul {
+          list-style: none;
+          padding-left: 0;
+          text-align: left; /* Align text left for readability */
+      }
+      #news-feed li {
+          margin-bottom: 20px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #eee; /* Add separator lines */
+      }
+      #news-feed h3 {
+          font-size: 18px; /* Adjust title size */
+          margin-top: 0;
+      }
+       #news-feed h3 a {
+          color: #333; /* Link color */
+      }
+       #news-feed p {
+          font-size: 14px;
+          color: #555;
       }
 
     </style>
-    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
-
+    <!-- No need for bootstrap-responsive.css with Bootstrap 5 -->
     <style type="text/css">
-    .row-fluid{
-        max-width: 520px;
-        margin: 0 auto;
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #f8f9fa;
+        }
+        .container-narrow {
+          background-color: #1e1e1e;
+        }
+        #news-feed li {
+          border-bottom: 1px solid #333;
+        }
+        #news-feed h3 a {
+          color: #f8f9fa;
+        }
+        #news-feed p {
+          color: #adb5bd;
+        }
       }
     </style>
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
 
-
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NN13SXB1L6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-NN13SXB1L6');
-</script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NN13SXB1L6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NN13SXB1L6');
+  </script>
+  
+  <!-- Preload Google Font for better performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   </head>
 
@@ -77,15 +128,123 @@
     <div class="container-narrow">
 
       <div class="jumbotron">
-        <h1>Is er al witte rook? <span class="answer-no">NEE</span></h1>
+        <h1 class="display-4">Is er al witte rook? <span class="answer-no">NEE</span></h1>
       </div>
 
       <hr>
 
-      <div class="footer">
-        <p>&copy; 2025 - Een project van <a href="http://russchenmedia.nl">Russchen Media</a></p>
+      <h2>Vatican News</h2>
+      <div id="news-feed">
+        <p>Loading news...</p>
+      </div>
+      <hr>
+
+      <div class="footer mt-4">
+        <p>&copy; 2025 - Een project van <a href="https://russchenmedia.nl" class="link-primary">Russchen Media</a></p>
       </div>
 
-    </div> <!-- /container -->
+    </div> <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const feedContainer = document.getElementById('news-feed');
+        
+        // Vatican News RSS feed URL
+        const rssFeedUrl = 'https://www.vaticannews.va/en.rss.xml';
+        
+        // URL to your PHP proxy script
+        const feedUrlToFetch = 'fetch_feed.php?url=' + encodeURIComponent(rssFeedUrl);
+
+        fetch(feedUrlToFetch)
+          .then(response => {
+            console.log('Fetch response status:', response.status);
+            if (!response.ok) {
+               // Check for specific proxy errors or general HTTP errors
+               if (response.status === 0) {
+                   throw new Error('Network error connecting to proxy or CORS issue if proxy is on different domain.');
+               } else if (response.status === 502) {
+                   throw new Error('Proxy script failed to fetch the feed from the source (Bad Gateway).');
+               } else if (response.status === 400) {
+                    throw new Error('Proxy script reported a Bad Request (check URL parameter).');
+               }
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+          .then(data => {
+            // Check if the parser returned an error document (common if the proxy returned an HTML error page instead of XML)
+            const parserError = data.querySelector("parsererror");
+            if (parserError) {
+                console.error("Parsing Error:", parserError.textContent);
+                throw new Error("Failed to parse the feed XML. The proxy might have returned an error message instead of XML.");
+            }
+
+            feedContainer.innerHTML = ''; // Clear "Loading..." message
+            const items = data.querySelectorAll("item");
+            if (items.length === 0) {
+                // Check if it's valid XML but just empty
+                if (data.documentElement && data.documentElement.nodeName !== 'parsererror') {
+                     feedContainer.innerHTML = '<p>No news items found in the feed.</p>';
+                } else {
+                    // If it wasn't valid XML and not caught above, re-throw.
+                    throw new Error("Received empty or invalid XML data from proxy.");
+                }
+                return;
+            }
+
+            let newsHtml = '<ul>';
+            items.forEach(item => {
+              const title = item.querySelector("title")?.textContent || 'No title';
+              const link = item.querySelector("link")?.textContent || '#';
+              // Description often contains HTML, try to get text or limited HTML
+              const descriptionNode = item.querySelector("description");
+              let description = descriptionNode?.textContent || '';
+
+              // Basic cleanup of potential leftover HTML if just getting textContent
+              description = description.replace(/<[^>]*>/g, '').trim();
+
+              // Limit description length
+              const shortDescription = description.substring(0, 200) + (description.length > 200 ? '...' : '');
+
+              newsHtml += `
+                <li>
+                  <h3><a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+                  ${shortDescription ? `<p>${shortDescription}</p>` : ''}
+                </li>
+              `;
+            });
+            newsHtml += '</ul>';
+            feedContainer.innerHTML = newsHtml;
+          })
+          .catch(error => {
+            feedContainer.innerHTML = `<p>Failed to load news feed. Error: ${error}.</p>
+            <p>Attempting to use a mock feed for demonstration...</p>`;
+            console.error('Error fetching or parsing feed via proxy:', error);
+            
+            // Fallback to mock data
+            setTimeout(() => {
+              const mockItems = [
+                { title: "Pope Francis delivers Easter message", description: "Pope Francis has delivered his Urbi et Orbi message, praying for peace in conflict areas around the world.", link: "https://www.vaticannews.va/en.html" },
+                { title: "Vatican announces special Jubilee Year", description: "The Vatican has announced a special Jubilee Year focused on hope and renewal, with pilgrims expected from around the world.", link: "https://www.vaticannews.va/en.html" },
+                { title: "New Cardinals to be appointed next month", description: "Pope Francis will appoint new Cardinals in a consistory scheduled for next month, expanding representation from the global south.", link: "https://www.vaticannews.va/en.html" },
+                { title: "Vatican increases environmental initiatives", description: "The Vatican continues to implement environmental initiatives in line with Pope Francis's encyclical Laudato Si'.", link: "https://www.vaticannews.va/en.html" }
+              ];
+              
+              let newsHtml = '<ul><li><strong>MOCK DATA (Feed unavailable)</strong></li>';
+              mockItems.forEach(item => {
+                newsHtml += `
+                  <li>
+                    <h3><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h3>
+                    <p>${item.description}</p>
+                  </li>
+                `;
+              });
+              newsHtml += '</ul>';
+              feedContainer.innerHTML = newsHtml;
+            }, 1500);
+          });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
   </body>
 </html>
