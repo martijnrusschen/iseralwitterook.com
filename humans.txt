@@ -1,0 +1,11 @@
+/* CREATOR */
+  Creator: Martijn Russchen
+  Website: https://martijnrusschen.nl
+  Contact: https://martijnrusschen.nl/contact/
+  From: Netherlands
+
+/* SITE */
+  Last update: 2025/04/21
+  Language: Dutch
+  Doctype: HTML5
+  Tools: Bootstrap, CSS3, JavaScript
