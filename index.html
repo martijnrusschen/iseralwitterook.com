@@ -133,7 +133,7 @@
 
       <hr>
 
-      <h2>Vatican News</h2>
+      <h2>NOS Nieuws over de Paus & Vaticaan</h2>
       <div id="news-feed">
         <p>Loading news...</p>
       </div>
@@ -147,8 +147,8 @@
       document.addEventListener('DOMContentLoaded', function() {
         const feedContainer = document.getElementById('news-feed');
         
-        // Vatican News RSS feed URL
-        const rssFeedUrl = 'https://www.vaticannews.va/en.rss.xml';
+        // NOS International News RSS feed URL
+        const rssFeedUrl = 'https://feeds.nos.nl/nosnieuwsbuitenland';
         
         // URL to your PHP proxy script
         const feedUrlToFetch = 'fetch_feed.php?url=' + encodeURIComponent(rssFeedUrl);
@@ -191,8 +191,34 @@
                 return;
             }
 
-            let newsHtml = '<ul>';
+            // Keywords to filter by - case insensitive
+            const keywords = ['paus', 'vaticaan', 'vatican', 'pope', 'francis'];
+            const filteredItems = [];
+            
+            // Filter items containing our keywords
             items.forEach(item => {
+              const title = item.querySelector("title")?.textContent || '';
+              const descriptionNode = item.querySelector("description");
+              const description = descriptionNode?.textContent || '';
+              
+              // Check if any keyword is in the title or description (case insensitive)
+              const hasKeyword = keywords.some(keyword => 
+                title.toLowerCase().includes(keyword.toLowerCase()) || 
+                description.toLowerCase().includes(keyword.toLowerCase())
+              );
+              
+              if (hasKeyword) {
+                filteredItems.push(item);
+              }
+            });
+            
+            if (filteredItems.length === 0) {
+              feedContainer.innerHTML = '<p>Geen nieuws over de paus of het Vaticaan gevonden.</p>';
+              return;
+            }
+            
+            let newsHtml = '<ul>';
+            filteredItems.forEach(item => {
               const title = item.querySelector("title")?.textContent || 'No title';
               const link = item.querySelector("link")?.textContent || '#';
               // Description often contains HTML, try to get text or limited HTML
@@ -216,31 +242,10 @@
             feedContainer.innerHTML = newsHtml;
           })
           .catch(error => {
-            feedContainer.innerHTML = `<p>Failed to load news feed. Error: ${error}.</p>
-            <p>Attempting to use a mock feed for demonstration...</p>`;
             console.error('Error fetching or parsing feed via proxy:', error);
+            feedContainer.innerHTML = `<p>Fout bij het laden van het nieuwsoverzicht: ${error}.</p>
+            <p>Probeer later opnieuw.</p>`;
             
-            // Fallback to mock data
-            setTimeout(() => {
-              const mockItems = [
-                { title: "Pope Francis delivers Easter message", description: "Pope Francis has delivered his Urbi et Orbi message, praying for peace in conflict areas around the world.", link: "https://www.vaticannews.va/en.html" },
-                { title: "Vatican announces special Jubilee Year", description: "The Vatican has announced a special Jubilee Year focused on hope and renewal, with pilgrims expected from around the world.", link: "https://www.vaticannews.va/en.html" },
-                { title: "New Cardinals to be appointed next month", description: "Pope Francis will appoint new Cardinals in a consistory scheduled for next month, expanding representation from the global south.", link: "https://www.vaticannews.va/en.html" },
-                { title: "Vatican increases environmental initiatives", description: "The Vatican continues to implement environmental initiatives in line with Pope Francis's encyclical Laudato Si'.", link: "https://www.vaticannews.va/en.html" }
-              ];
-              
-              let newsHtml = '<ul><li><strong>MOCK DATA (Feed unavailable)</strong></li>';
-              mockItems.forEach(item => {
-                newsHtml += `
-                  <li>
-                    <h3><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h3>
-                    <p>${item.description}</p>
-                  </li>
-                `;
-              });
-              newsHtml += '</ul>';
-              feedContainer.innerHTML = newsHtml;
-            }, 1500);
           });
       });
     </script>
