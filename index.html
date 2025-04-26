@@ -99,13 +99,41 @@
 
       /* Main marketing message and sign up button */
       .jumbotron {
-        margin: 60px 0;
+        margin: 30px 0 60px;
         text-align: center;
         padding: 2rem 1rem;
         background-color: #f8f9fa;
         border-radius: 0.5rem;
         position: relative;
         z-index: 1;
+      }
+      
+      /* Enhanced main message styling */
+      .main-message {
+        box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        border: 2px solid #f8f9fa;
+        background-color: #fff;
+        transform: translateY(-15px);
+      }
+      
+      .main-message h1 {
+        font-size: 3.8rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.8rem;
+      }
+      
+      .main-message .answer-no {
+        font-size: 4rem;
+        display: block;
+        margin-top: 0.5rem;
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
       }
       
       /* Share buttons styling */
@@ -191,6 +219,87 @@
     </style>
     <!-- No need for bootstrap-responsive.css with Bootstrap 5 -->
     <style type="text/css">
+      /* Vatican header styling */
+      .vatican-header {
+        position: relative;
+        width: 100%;
+        margin-bottom: 20px;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      }
+      
+      .vatican-image {
+        display: block;
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        object-position: center;
+        transition: transform 8s ease-in-out;
+      }
+      
+      .vatican-header:hover .vatican-image {
+        transform: scale(1.05);
+      }
+      
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.6));
+      }
+      
+      .vatican-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        color: white;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      }
+      
+      .vatican-caption h2 {
+        font-size: 1.6rem;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+      
+      .vatican-caption p {
+        font-size: 1rem;
+        margin-bottom: 0;
+        opacity: 0.9;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 767px) {
+        .vatican-image {
+          height: 180px;
+        }
+        
+        .vatican-caption h2 {
+          font-size: 1.3rem;
+        }
+        
+        .vatican-caption p {
+          font-size: 0.9rem;
+        }
+        
+        .jumbotron {
+          margin-top: 30px;
+        }
+        
+        .main-message h1 {
+          font-size: 2.8rem;
+        }
+        
+        .main-message .answer-no {
+          font-size: 3rem;
+        }
+      }
+      
       /* Dark mode support */
       @media (prefers-color-scheme: dark) {
         body {
@@ -199,6 +308,14 @@
         }
         .container-narrow {
           background-color: #1e1e1e;
+        }
+        .main-message {
+          background-color: #2d2d2d;
+          border-color: #444;
+          box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+        }
+        .overlay {
+          background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5));
         }
         #news-feed li {
           border-bottom: 1px solid #333;
@@ -263,8 +380,16 @@
     </div>
     
     <div class="container-narrow">
+      <div class="vatican-header">
+        <img src="vatican.jpg" alt="Sint-Pietersplein, Vaticaanstad" class="img-fluid vatican-image">
+        <div class="overlay"></div>
+        <div class="vatican-caption">
+          <h2>Sint-Pietersplein, Vaticaanstad</h2>
+          <p>Het beroemde plein waar duizenden mensen verzamelen wanneer witte rook verschijnt</p>
+        </div>
+      </div>
 
-      <div class="jumbotron">
+      <div class="jumbotron main-message">
         <h1 class="display-4">Is er al witte rook? <span class="answer-no">NEE</span></h1>
         <p class="lead mt-3">De katholieke kerk heeft nog geen nieuwe paus gekozen. Hier zie je direct wanneer er witte rook is.</p>
         
