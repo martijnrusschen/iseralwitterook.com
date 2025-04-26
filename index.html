@@ -33,6 +33,54 @@
         padding-top: 20px;
         padding-bottom: 40px;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Black smoke animation */
+      .black-smoke-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      
+      .smoke-particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .smoke-particle {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 50%;
+        animation: float-up var(--duration) ease-out infinite;
+        opacity: 0;
+      }
+      
+      @keyframes float-up {
+        0% {
+          transform: translateY(100%) translateX(0) scale(0.2);
+          opacity: 0;
+        }
+        20% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        80% {
+          opacity: 0.3;
+        }
+        100% {
+          transform: translateY(-300%) translateX(var(--translateX)) scale(2);
+          opacity: 0;
+        }
       }
 
       /* Custom container */
@@ -41,6 +89,9 @@
         max-width: 700px;
         padding-left: 15px;
         padding-right: 15px;
+        background-color: rgba(255, 255, 255, 0.9);
+        position: relative;
+        z-index: 1;
       }
       .container-narrow > hr {
         margin: 30px 0;
@@ -53,6 +104,8 @@
         padding: 2rem 1rem;
         background-color: #f8f9fa;
         border-radius: 0.5rem;
+        position: relative;
+        z-index: 1;
       }
       
       /* Share buttons styling */
@@ -96,6 +149,9 @@
       }
       
       @media (prefers-color-scheme: dark) {
+        .container-narrow {
+          background-color: rgba(30, 30, 30, 0.9);
+        }
         .jumbotron {
           background-color: #2d2d2d;
         }
@@ -202,7 +258,10 @@
   </head>
 
   <body>
-
+    <div class="black-smoke-bg">
+      <div class="smoke-particles" id="smokeParticles"></div>
+    </div>
+    
     <div class="container-narrow">
 
       <div class="jumbotron">
@@ -359,6 +418,77 @@
       });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check if there's an element with class "answer-yes"
+        // If yes, don't show the black smoke animation
+        const hasWhiteSmoke = document.querySelector('.answer-yes') !== null;
+        
+        if (!hasWhiteSmoke) {
+          // Create and animate the black smoke particles
+          createSmokeAnimation();
+        }
+        
+        function createSmokeAnimation() {
+          const container = document.getElementById('smokeParticles');
+          if (!container) return;
+          
+          // Clear any existing particles
+          container.innerHTML = '';
+          
+          // Create multiple smoke particles
+          for (let i = 0; i < 30; i++) {
+            createSmokeParticle(container);
+          }
+          
+          // Continue creating new particles
+          setInterval(() => {
+            // Remove old particles to avoid performance issues
+            if (container.children.length > 40) {
+              container.removeChild(container.firstChild);
+            }
+            
+            createSmokeParticle(container);
+          }, 1000);
+        }
+        
+        function createSmokeParticle(container) {
+          // Create a new smoke particle
+          const particle = document.createElement('div');
+          particle.classList.add('smoke-particle');
+          
+          // Random size between 20px and 100px
+          const size = 20 + Math.random() * 80;
+          
+          // Random position along the bottom of the screen
+          const startX = Math.random() * window.innerWidth;
+          
+          // Random duration between 8 and 15 seconds
+          const duration = 8 + Math.random() * 7;
+          
+          // Random horizontal drift as it rises
+          const translateX = (Math.random() - 0.5) * 150 + 'px';
+          
+          // Set CSS properties
+          particle.style.width = size + 'px';
+          particle.style.height = size + 'px';
+          particle.style.left = startX + 'px';
+          particle.style.bottom = '-' + size + 'px';
+          particle.style.setProperty('--duration', duration + 's');
+          particle.style.setProperty('--translateX', translateX);
+          
+          // Add to container
+          container.appendChild(particle);
+          
+          // Remove the particle after animation completes to clean up DOM
+          setTimeout(() => {
+            if (particle.parentNode === container) {
+              container.removeChild(particle);
+            }
+          }, duration * 1000 + 100);
+        }
+      });
+    </script>
   </body>
 </html>
