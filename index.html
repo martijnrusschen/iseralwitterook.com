@@ -159,6 +159,16 @@
       .gap-2 {
         gap: 0.5rem !important;
       }
+      
+      /* Live stream container styling */
+      .live-stream-container {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        background-color: #f8f9fa;
+        padding: 1rem;
+        margin-top: 1rem;
+      }
       .jumbotron h1 {
         font-size: 3.5rem;
         line-height: 1.2;
@@ -182,6 +192,10 @@
         }
         .jumbotron {
           background-color: #2d2d2d;
+        }
+        .live-stream-container {
+          background-color: #2d2d2d;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         .btn-outline-dark {
           color: #f8f9fa;
@@ -297,6 +311,11 @@
         
         .main-message .answer-no {
           font-size: 3rem;
+        }
+        
+        .live-stream-container {
+          padding: 0.75rem;
+          margin-top: 0.75rem;
         }
       }
       
@@ -449,6 +468,19 @@
             </a>
           </div>
         </div>
+      </div>
+
+      <hr>
+      
+      <h2>Live Sixtijnse Kapel Rook Camera</h2>
+      <div class="live-stream-container mb-4">
+        <div class="ratio ratio-16x9">
+          <iframe src="https://www.youtube.com/embed/S4_PCRvPZko" 
+                  title="Live Sixtijnse Kapel Rook Camera" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  allowfullscreen></iframe>
+        </div>
+        <p class="mt-2"><small>Live stream van de Sixtijnse Kapel schoorsteen. Zodra er witte rook verschijnt, is er een nieuwe paus gekozen.</small></p>
       </div>
 
       <hr>
